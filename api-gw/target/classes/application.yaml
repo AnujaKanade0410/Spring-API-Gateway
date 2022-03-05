@@ -1,0 +1,35 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gw
+  cloud:    gateway:
+      discovery:        locator:          enabled: true
+      routes:
+      #savings a
+       - id: savings-a
+         uri: http://localhost:8081
+         predicates:
+            - Path=/savings/a/balance
+         filters:
+            - StripPrefix=1
+            - name: CircuitBreaker
+              args:
+                name: savingsaccount
+                fallbackuri: fallback:/savingsaccount-fallback
+     #savings b
+       - id: savings-b
+         uri: http://localhost:8082
+         predicates:
+            - Path=/savings/b/balance
+         filters:
+            - StripPrefix=1
+            - name: CircuitBreaker
+              args:
+                name: savingsaccount
+                fallbackuri: fallback:/savingsaccount-fallback     
+resilience4j:
+  timelimiter:
+    instances:
+      savingsaccount:
+        timeoutDuration: 5s
