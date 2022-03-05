@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: savings-b
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+      show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: mydb
+    initialization-mode: always
+    initialize: true
+    continue-on-error: true    
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5        
+server:  port: 8082
+       
+               
